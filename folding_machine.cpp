@@ -11,6 +11,8 @@ const int MAX = 20;
 
 ofstream file("output.txt");
 char ans;
+map<vector<int>, int> memo;
+
 bool check_fold(vector<int> &v, vector<int> &out){
     
     if(v.size() != out.size()) return false;
@@ -46,12 +48,14 @@ void solve(vector<int> v, vector<int> &out){
         ans = 'S';
         return;
     }
-    
-    for(int i = 1; i < v.size(); i++){
+    memo[v] = 1;
+    for(int i = 0; i <= v.size(); i++){
         vector<int> n = gen_fold(v, i);
-        solve(n, out);
-    }   
-    
+        if(!memo[n]){
+            solve(n, out);
+        }    
+    }  
+
 }
 
 
@@ -68,15 +72,9 @@ int main(){_
         
         if(accumulate(v.begin(), v.end(), 0) == accumulate(out.begin(), out.end(), 0)){
             solve(v, out);
-            reverse(v.begin(), v.end());
-            solve(v, out);
-            reverse(out.begin(), out.end());
-            solve(v, out);
-
         }
-        
-        file << ans << endl;
-
+        memo.clear();
+        cout << ans << endl;
     }
     return 0;
 }
