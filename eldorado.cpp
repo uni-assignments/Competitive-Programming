@@ -7,15 +7,16 @@ const int INF = 0x3f3f3f3f;
 
 
 int n, k;
-int memo[101][101];
+long long memo[101][101];
+vector<int> seq;
 
-int dp(vector<int> &seq){
-    int ans = 0;
+long long dp(){
+    long long ans = 0;
  
     for (int i = 0; i < n; i++){
         memo[i][0] = 1;
         for (int j = 0; j < i; j++) if (seq[i] > seq[j]){
-            for (int l = n - j; l >= 0; l--){
+            for (int l = 0; l < i; l++){
                     memo[i][l + 1] += memo[j][l];
             }
         }
@@ -31,13 +32,12 @@ int main(){ _
     while(true){
         cin >> n >> k;
         if(!n and !k) break;
-        
-        vector<int> seq(n);
+        seq.resize(n);
         for(int i = 0; i < n; i++){
             cin >> seq[i];
         }
         memset(memo, 0, sizeof(memo));
-        cout << dp(seq) << endl;
+        cout << dp() << endl;
     }
 
     return 0;
